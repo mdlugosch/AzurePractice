@@ -1,0 +1,54 @@
+How to create multiple views for a customized form for a modern SharePoint list
+=========================== 
+
+
+==============================
+1) Create the Various Screens & Renaming
+==============================
+Duplicate the Screen (.vs Creating new screens)
+
+Screen Names: ScreenView, ScreenEdit, ScreenNew
+
+Form Names: FormView, FormEdit, FormNew
+
+
+
+==============================
+2) Change the form's "Default Mode" 
+to match the form role
+==============================
+New, Edit, View
+
+
+
+
+==============================
+3) Update the SharePointIntegration 
+Actions to the following
+==============================
+
+OnNew - 
+
+Set(SharePointFormMode, "CreateForm"); NewForm(FormNew); Navigate(ScreenNew, ScreenTransition.None)
+
+OnEdit - 
+
+Set(SharePointFormMode, "EditForm"); EditForm(FormEdit); Navigate(ScreenEdit, ScreenTransition.None)
+
+OnView - 
+
+Set(SharePointFormMode, "ShowForm"); ViewForm(FormView); Navigate(ScreenView, ScreenTransition.None)
+
+
+onSave
+
+If(SharePointFormMode="CreateForm", SubmitForm(FormNew), If(SharePointFormMode="EditForm", SubmitForm(FormEdit)))
+
+
+OnCancel
+If(SharePointFormMode="CreateForm", ResetForm(FormNew), If(SharePointFormMode="EditForm", ResetForm(FormEdit)))
+
+
+
+You can find more details here
+https://powerapps.microsoft.com/en-us/blog/separate-custom-forms/ 
